@@ -1,0 +1,28 @@
+usuario:
+    resource: "@UsuarioBundle/Resources/config/routing.yml"
+    prefix:   /
+
+tienda:
+    resource: "@TiendaBundle/Resources/config/routing.yml"
+    prefix:   /
+
+ciudad:
+    resource: "@CiudadBundle/Resources/config/routing.yml"
+    prefix:   /
+
+oferta:
+    resource: "@OfertaBundle/Resources/config/routing.yml"
+    prefix:   /
+
+# gestión de páginas estáticas
+#ej ruta http://localhost/Cupon/web/app_dev.php/sitio/ayuda
+pagina_estatica:
+    path: /sitio/{pagina}/
+    defaults: { _controller:OfertaBundle:Sitio:estatica}
+# otra opción para gestionar páginas estáticas mediante la creación y enlace a un archivo app/config/routing_paginas.yml
+#ej ruta http://localhost/Cupon/web/app_dev.php/pagina/ayuda    
+_paginas_estaticas:
+    resource: routing_paginas.yml
+    prefix: /pagina
+    defaults: { _controller:FrameworkBundle:Template:template}    
+    
