@@ -6,4 +6,10 @@ pagina_privacidad:
      defaults: {template:'OfertaBundle:Sitio:privacidad.html.twig'}   
 pagina_condiciones:
      path: /condiciones/
-     defaults: {template:'OfertaBundle:Sitio:condiciones.html.twig'}   
+     defaults: {template:'OfertaBundle:Sitio:condiciones.html.twig'}  
+pagina_contacto:
+     path: /contacto/
+     defaults: {template:'OfertaBundle:Sitio:contacto.html.twig'}
+pagina_sobre-nosotros:
+     path: /sobre-nosotros/
+     defaults: {template:'OfertaBundle:Sitio:sobre-nosotros.html.twig'}           

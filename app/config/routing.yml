@@ -25,4 +25,17 @@ _paginas_estaticas:
     resource: routing_paginas.yml
     prefix: /pagina
     defaults: { _controller:FrameworkBundle:Template:template}    
-    
+
+# ruta a la página principal.
+portada:
+    path: /{ciudad}
+    defaults: {_controller:OfertaBundle:Default:portada, ciudad: 'madrid'}
+# Esta ruta se redirigirá a portada en el controlador porque es obligatorio que aparezca el slash con la ciudad    
+#_portada:
+#    path: /
+#    defaults: {_controller:OfertaBundle:Default:portada}     
+
+#redireccionando a portada desde el propio routing
+_portada:
+    path: /
+    defaults: { _controller: FrameworkBundle:Redirect:redirect, route: portada, ciudad: '%cupon.ciudad_por_defecto%'}  

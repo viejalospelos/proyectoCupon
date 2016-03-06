@@ -67,3 +67,8 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+    
+# Parámetros de configuración de la portada (controlador OfertaBundle DefaultController
+# Se recupera en el controlador con container->getParameter('cupon.ciudad_por_defecto')
+parameters:
+    cupon.ciudad_por_defecto: 'barcelona'    
