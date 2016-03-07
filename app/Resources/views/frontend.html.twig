@@ -13,6 +13,12 @@
             <li><a href="{{ path('portada') }}">Oferta del día</a></li>
             <li><a href="#">Ofertas recientes</a></li>
             <li><a href="#">Mis ofertas</a></li>
+            {#método render para consultar la lista de ciudades para el desplegable #}
+            {% set ciudadSeleccionada=app.request.attributes.has('ciudad')
+            ? app.request.attributes.get('ciudad')
+            : ciudad_por_defecto 
+            %}
+            <li>{{ render(controller('CiudadBundle:Default:listaCiudades', {'ciudad': ciudadSeleccionada})) }} </li>
         </ul>
     </nav>
 </header>
