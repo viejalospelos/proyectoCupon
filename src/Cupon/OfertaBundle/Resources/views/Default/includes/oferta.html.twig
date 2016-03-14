@@ -1,11 +1,12 @@
 {#Código comun entre oferta del dia y detalle de la oferta para incluir con include#}
 <section class="descripcion">
-    <h1><a href="{{ path('ofertas', { 'ciudad': oferta.ciudad.slug, 'slug' : oferta.slug }) }}">{{ oferta.nombre }}</a></h1> {{ oferta.descripcion }}
+    <h1><a href="{{ path('ofertas', { 'ciudad': oferta.ciudad.slug, 'slug' : oferta.slug }) }}">{{ oferta.nombre }}</a></h1> {{ oferta.descripcion | mostrar_como_lista }}
     <a class="boton" href="#">Comprar</a>
 </section>
 <section class="galeria">
     <img alt="..." src="{{ asset('bundles/oferta/images/' ~ oferta.rutaFoto) }}">
-    <p class="precio">{{ oferta.precio }} &euro; <span>{{ oferta.descuento }}</span></p>
+    <p class="precio">{{ oferta.precio }} &euro; 
+    <span>{{ descuento(oferta.precio, oferta.descuento) }}</span></p>
     <p><strong>Condiciones:</strong> {{ oferta.condiciones }}</p>
 </section>
 {# ... #}
@@ -14,6 +15,11 @@
     <p>
         <a href="#">{{ oferta.tienda.nombre }}</a> {{ oferta.tienda.direccion }}
     </p>
+</section>
+<section class="estado">
+	<div id="tiempo">
+		<strong>Faltan</strong>: {{ oferta.fechaExpiracion | cuenta_atras }}
+	</div>
 </section>
 <section class="tienda">
     <h2>Sobre la tienda</h2> {{ oferta.tienda.description }}

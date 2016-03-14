@@ -1,6 +1,7 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
+    - { resource: services.yml }
 
 framework:
     #esi:             ~
@@ -74,3 +75,4 @@ swiftmailer:
 # Se recupera en el controlador con container->getParameter('cupon.ciudad_por_defecto')
 parameters:
     cupon.ciudad_por_defecto: 'barcelona'    
+ 
