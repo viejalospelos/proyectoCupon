@@ -7,4 +7,8 @@ ciudad_cambiar:
     defaults: { _controller: CiudadBundle:Default:cambiar }
     requirements:
         ciudad: .+
+
+ciudades_recientes:
+    path:    /{ciudad}/recientes
+    defaults: { _controller: CiudadBundle:Default:recientes }        
             
