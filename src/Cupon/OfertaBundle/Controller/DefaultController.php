@@ -12,9 +12,9 @@ class DefaultController extends Controller
         $em=$this->getDoctrine()->getManager();
         $oferta=$em->getRepository('OfertaBundle:Oferta')->findOfertaDelDia($ciudad);
         
-        /*if (!$oferta){
+        if (!$oferta){
         	throw $this->createNotFoundException('Mierda, no se encuentra oferta del día');
-        }*/
+        }
         
         return $this->render('OfertaBundle:Default:portada.html.twig',
         array('oferta'=>$oferta)

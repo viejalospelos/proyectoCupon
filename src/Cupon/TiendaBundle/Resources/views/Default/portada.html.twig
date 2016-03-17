@@ -31,6 +31,10 @@
 				<td>{{ oferta.descuento }} &euro;</td>
 				<td>{{ oferta.compras }}</td>
 			</tr>
+			{% else %}
+			<tr>
+				<td colspam="5">Esta tienda no ha publicado ninguna oferta</td>
+			</tr>	
 			{% endfor %}
 		</tbody>		
 	</table>	

@@ -30,6 +30,9 @@ class DefaultController extends Controller
     public function recientesAction($ciudad){
     	$em=$this->getDoctrine()->getManager();
     	$ciudad=$em->getRepository('CiudadBundle:Ciudad')->findOneBySlug($ciudad);
+    	if (!$ciudad){
+    		throw $this->createNotFoundException('No existe esa ciudad');
+    	}
     	$cercanas=$em->getRepository('CiudadBundle:Ciudad')->findCercanas($ciudad->getId());
     	$ofertas=$em->getRepository('OfertaBundle:Oferta')->findRecientes($ciudad->getId());
     	
