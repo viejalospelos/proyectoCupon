@@ -1,6 +1,7 @@
+# usamos prefix para que todas las rutas de usuario contengan .../usuario/... y no tener que reseñarlo en cada ruta de routing.yml del bundle
 usuario:
     resource: "@UsuarioBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /usuario
 
 tienda:
     resource: "@TiendaBundle/Resources/config/routing.yml"

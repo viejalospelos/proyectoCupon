@@ -1,3 +1,4 @@
-usuario_homepage:
-    path:     /hello/{name}
-    defaults: { _controller: UsuarioBundle:Default:index }
+# en el path no tenemos que poner /usuario/compras porque lo hemos automatizado con la opción prefix en app/config/routing.yml
+usuario_compras:
+    path:     /compras
+    defaults: { _controller: UsuarioBundle:Default:compras }

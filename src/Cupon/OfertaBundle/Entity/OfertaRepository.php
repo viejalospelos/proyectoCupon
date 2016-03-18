@@ -11,7 +11,8 @@ class OfertaRepository extends EntityRepository{
 		$em=$this->getEntityManager();
 		$dql='SELECT o, c, t
 				FROM OfertaBundle:Oferta o
-				JOIN o.ciudad c JOIN o.tienda t
+				JOIN o.ciudad c 
+				JOIN o.tienda t
 				WHERE o.revisada=true
 				AND o.fechaPublicacion < :fecha
 				AND c.slug= :ciudad
@@ -30,7 +31,8 @@ class OfertaRepository extends EntityRepository{
 		$consulta=$em->createQuery(
 				'SELECT o, c, t
 				FROM OfertaBundle:Oferta o
-				JOIN o.ciudad c JOIN o.tienda t
+				JOIN o.ciudad c 
+				JOIN o.tienda t
 				WHERE o.revisada=true
 				AND o.slug= :slug
 				AND c.slug= :ciudad'

@@ -1,0 +1,25 @@
+{% extends '::frontend.html.twig' %}
+
+{% block title %}Últimas ofertas que has comprado{% endblock %}
+{% block id 'compras' %}
+
+{% block article %}
+	<h1>{{ block('title') }}</h1>
+{#hay que usar with para cambiar el valor de la variable y que funcione minioferta 
+puesto que la variable que espera esa plantilla es oferta y nosotros le estamos 
+pasando la variable compras.
+
+La variable 'comprada' y 'fechacompra' se activan sólo para la plantilla compras.html.twig mediante with y de 
+esa forma, la modificación no afecta al resto de plantillas que heredan minioferta#}
+	
+	{% for compra in compras %}
+		{% include 'OfertaBundle:Default:includes/minioferta.html.twig' 
+		with {'oferta': compra.oferta,
+				'comprada': true,
+				'fechaCompra': compra.fecha} %}
+	{% endfor %}	
+{% endblock %}	
+
+{% block aside %}
+	{#......#}
+{% endblock %}	
