@@ -3,6 +3,7 @@
 namespace Cupon\UsuarioBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Usuario
@@ -10,8 +11,23 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Cupon\UsuarioBundle\Entity\UsuarioRepository")
  */
-class Usuario
+class Usuario implements UserInterface
 {
+	function eraseCredentials()
+	{		
+	}
+	
+	function getRoles()
+	{
+		return array('ROLE_USUARIO');
+	}
+	
+	function getUsername()
+	{
+		return $this->getEmail();
+	}
+	
+	
     /**
      * @var integer $id
      *

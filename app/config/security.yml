@@ -1,40 +1,39 @@
 security:
-    encoders:
-        Symfony\Component\Security\Core\User\User: plaintext
-        Cupon\TiendaBundle\Entity\Tienda: plaintext
-        Cupon\UsuarioBundle\Entity\Usuario: plaintext
-
-    role_hierarchy:
-        ROLE_ADMIN:       ROLE_USER
-        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
-
-    providers:
-        in_memory:
-            memory:
-                users:
-                    user:  { password: userpass, roles: [ 'ROLE_USER' ] }
-                    admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
-
+# el firewall protege partes enteras de la aplicación (urls)
+# en pattern iría la url o REGEX
+# en este caso la REGEX indica que todas las urls de la app están protegidas por él, es decir, 
+# cualquier usuario que quiera acceder a la app tiene que estar loggeado pero la opción annonymous permite el acceso a usuarios anónimos
+# la opción form_login indica cómo se tienen que loggear. Otras opciones: http_basic (típica caja de usuario/contraseña), http_digest (típica caja de usuario/contraseña), x509. Todos estos excepto form_login exigen la opción provider
     firewalls:
-        dev:
-            pattern:  ^/(_(profiler|wdt)|css|images|js)/
-            security: false
-
-        login:
-            pattern:  ^/demo/secured/login$
-            security: false
-
-        secured_area:
-            pattern:    ^/demo/secured/
-            form_login:
-                check_path: _security_check
-                login_path: _demo_login
-            logout:
-                path:   _demo_logout
-                target: _demo
-            #anonymous: ~
-            #http_basic:
-            #    realm: "Secured Demo Area"
-
+        frontend:
+            pattern:    ^/*
+            anonymous:    ~
+            form_login: 
+                login_path: usuario_login
+                check_path: usuario_login_check
+            remember_me:
+                key:    cupon1234
+                lifetime: 3600
+                    
+        
     access_control:
-        #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+# indica que tipo de usuario puede acceder a cada url 
+# login y registro se marcan como IS_AUTENTICATED_ANONYMOUSLY para que se pueda acceder a ellos como usuario anónimo
+# el resto de path .../usuario/... sólo se podrá acceder si se está autenticado
+# el orden aquí es importante, el último path/roles que hay que poner es { path: ^/usuario/*, roles: ROLE_USUARIO }, es decir, las excepciones siempre van antes
+        - { path: ^/usuario/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/usuario/registro, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/usuario/*, roles: ROLE_USUARIO }
+        
+    providers:
+# los proveedores son los encargados de crear los usuarios de la aplicación
+# hay 2 tipos de proveedores: memory (los usuarios se crean en memoria con los datos incluidos en el propio archivo security.yml)
+# y los entity que se crean a partir de objetos doctrine
+# se pueden definir varios proveedores, ej: para usuarios y tiendas y encadenarlos en un superproveedor  
+        usuarios:
+            entity: { class: Cupon\UsuarioBundle\Entity\Usuario, property: email }
+            
+    encoders:
+# configura como se codifican las contraseñas (plaintext, sha512)
+# en iterations marcamos el número de veces que se codifica. Si no ponemos nada será igual a 5000 veces y tarda mucho en hacerlo    
+        Cupon\UsuarioBundle\Entity\Usuario: plaintext                   
