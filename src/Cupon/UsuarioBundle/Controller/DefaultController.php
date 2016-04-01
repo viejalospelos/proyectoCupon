@@ -44,4 +44,24 @@ class DefaultController extends Controller
     			'error'		   =>$error
     	));
     }
+    
+    /**
+     * Muestra todas las compras del usuario logueado
+     */
+    public function comprasAction()
+    {
+    	$em = $this->getDoctrine()->getManager();
+    	$usuario = $this->get('security.context')->getToken()->getUser();
+    
+    	$cercanas = $em->getRepository('CiudadBundle:Ciudad')->findCercanas(
+    			$usuario->getCiudad()->getId()
+    			);
+    
+    	$compras = $em->getRepository('UsuarioBundle:Usuario')->findTodasLasCompras($usuario->getId());
+    
+    	return $this->render('UsuarioBundle:Default:compras.html.twig', array(
+    			'compras'  => $compras,
+    			'cercanas' => $cercanas
+    	));
+    }
 }
