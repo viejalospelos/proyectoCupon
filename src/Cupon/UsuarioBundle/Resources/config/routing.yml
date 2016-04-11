@@ -11,4 +11,8 @@ usuario_login_check:
     path:     /login_check
 
 usuario_logout:
-    path:     /logout   
+    path:     /logout
+    
+usuario_registro:
+    path: /registro
+    defaults: { _controller: UsuarioBundle:Default:registro }    

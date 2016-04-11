@@ -1,5 +1,9 @@
 {#para el usuario logeado#}
 {% if is_granted('ROLE_USUARIO') %}
+{#Mensaje flash del controlador UsuarioBundle/DefaultController de la función registroAction#}
+	{% for mensaje in app.session.flashbag.get('info') %}
+		<p class="info">{{ mensaje }}</p>
+	{% endfor %}
 {#En el siguiente párrafo podríamos somplificar a <p>Conectado como {{ app.user }}</p> porque definimos el método _toString en la entidad#}
 	<p>Conectado como {{ app.user.nombre ~' '~ app.user.apellidos }}</p>
 	<a href="#">Ver mi perfil</a>
@@ -8,6 +12,7 @@
 	
 {% else %}	
 {#para el usuario NO logeado#}
+	<a class="boton" href="{{ path('usuario_registro') }}">Regístrate</a>
 	<h2>Accede a tu cuenta</h2>
 	<form action="{{ path('usuario_login_check') }}" method="post">
 		{% if error %}

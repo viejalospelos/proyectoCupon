@@ -16,6 +16,8 @@ security:
             remember_me:
                 key:    cupon1234
                 lifetime: 3600
+            switch_user: true
+                
                
                     
         

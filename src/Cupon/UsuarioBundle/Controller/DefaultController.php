@@ -5,6 +5,9 @@ namespace Cupon\UsuarioBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContext;
+use Cupon\UsuarioBundle\Entity\Usuario;
+use Cupon\UsuarioBundle\Form\Frontend\UsuarioType;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 
 class DefaultController extends Controller
@@ -64,4 +67,51 @@ class DefaultController extends Controller
     			'cercanas' => $cercanas
     	));
     }
+//controlador para generar y procesar formularios
+//el mismo controlador genera y procesa
+//el procesado se hace mediante handleRequest()y isValid()
+    public function registroAction(Request $peticion)
+    {
+    	$usuario = new Usuario();
+    	$usuario->setPermiteMail(true);
+    	$usuario->setFechaNacimiento(new \DateTime('today - 18 years'));
+    	
+    	$formulario = $this->createForm(new UsuarioType(),$usuario);
+    	
+    	$formulario->handleRequest($peticion);
+    	if ($formulario->isValid()){
+    		$encoder=$this->get('security.encoder_factory')->getEncoder($usuario);
+    		$usuario->setSalt(md5(time()));
+    		$passwordCodificado=$encoder->encodePassword(
+    				$usuario->getPassword(),
+    				$usuario->getSalt()
+    				);
+    		$usuario->setPassword($passwordCodificado);
+    		
+    		$em=$this->getDoctrine()->getManager();
+    		$em->persist($usuario);
+    		$em->flush();
+    		
+    		//mensaje flash
+    		$this->get('session')->getFlashBag()->add('info','Enhorabuena, te has registrado correctamente en Cupon');
+    		
+    		//logeamos automáticamente al usuario
+    		$token= new UsernamePasswordToken(
+    				$usuario,
+    				$usuario->getPassword(),
+    				'frontend',
+    				$usuario->getRoles()
+    				);
+    		$this->container->get('security.context')->setToken($token);
+    		
+    		return $this->redirect($this->generateUrl('portada', array('ciudad'=>$usuario->getCiudad()->getSlug())));
+    	}
+
+    	return $this->render(
+    			'UsuarioBundle:Default:registro.html.twig',
+    			array('formulario' => $formulario->createView())
+    			);
+    }
+    
+    
 }
