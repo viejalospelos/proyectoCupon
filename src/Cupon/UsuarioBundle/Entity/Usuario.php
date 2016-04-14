@@ -4,12 +4,18 @@ namespace Cupon\UsuarioBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
+use Symfony\Component\Validator\ExecutionContextInterface;
+use Symfony\Component\Validator\ExecutionContext;
 
 /**
  * Usuario
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Cupon\UsuarioBundle\Entity\UsuarioRepository")
+ * @DoctrineAssert\UniqueEntity("email")
+ * @Assert\Callback(methods={"esDniValido"})
  */
 class Usuario implements UserInterface
 {
@@ -27,6 +33,36 @@ class Usuario implements UserInterface
 		return $this->getEmail();
 	}
 	
+	//Método 1 de verificación creando una constraint propia con anotacion callback
+    public function esDniValido(ExecutionContextInterface $context)
+    {
+        $dni = $this->getDni();
+
+        // Comprobar que el formato sea correcto
+        if (0 === preg_match("/\d{1,8}[a-z]/i", $dni)) {
+            $context->addViolationAt('dni', 'El DNI introducido no tiene el formato correcto (entre 1 y 8 números seguidos de una letra, sin guiones y sin dejar ningún espacio en blanco)',array(),null);
+
+            return;
+        }
+
+        // Comprobar que la letra cumple con el algoritmo
+        $numero = substr($dni, 0, -1);
+        $letra  = strtoupper(substr($dni, -1));
+        if ($letra != substr("TRWAGMYFPDXBNJZSQVHLCKE", strtr($numero, "XYZ", "012")%23, 1)) {
+            $context->addViolationAt('dni', 'La letra no coincide con el número del DNI. Comprueba que has escrito bien tanto el número como la letra');
+        }
+    }
+    
+    //Método 2 crear regla de validación ad-hoc. El nombre de la función tiene que comenzar por is o get y asociarle una regla del tipo @Assert\True
+    //Si hay algún error, lo marca en global en la parte superior en vez de ponerlo al lado del campo. Para solucionar esto se usa la opción error_mapping en la clase formulario UsuarioType
+    /**
+     * @Assert\True(message="Debes tener al menos 18 años")
+     */
+    public function isMayorDeEdad()
+    {
+    	return $this->fechaNacimiento <= new \DateTime('today - 18 years');
+    }
+	
 	
     /**
      * @var integer $id
@@ -41,6 +77,7 @@ class Usuario implements UserInterface
      * @var string $nombre
      *
      * @ORM\Column(name="nombre", type="string", length=100)
+     * @Assert\NotBlank()
      */
     private $nombre;
 
@@ -55,6 +92,7 @@ class Usuario implements UserInterface
      * @var string $email
      *
      * @ORM\Column(name="email", type="string", length=255, unique=true)
+     * @Assert\Email()
      */
     private $email;
 
@@ -62,6 +100,7 @@ class Usuario implements UserInterface
      * @var string $password
      *
      * @ORM\Column(name="password", type="string", length=255)
+     * @Assert\Length(min=6)
      */
     private $password;
 

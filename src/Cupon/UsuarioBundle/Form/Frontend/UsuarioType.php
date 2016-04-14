@@ -27,9 +27,13 @@ class UsuarioType extends AbstractType
 			->add('registrarme','submit');
 	}
 	//con setDefaultOptions se indica el namespace de la entidad vinculada
+	//error_mapping es una opción para que cuando haya un error de validación, el mensaje aparezca junto al campo. Se usa si utilizamos validaciones ad-hoc
 	public function setDefaultOptions(OptionsResolverInterface $resolver){
 		$resolver->setDefaults(array(
-				'data_class'=>'Cupon\UsuarioBundle\Entity\Usuario'
+				'data_class'=>'Cupon\UsuarioBundle\Entity\Usuario',
+				'error_mapping'=>array(
+						'mayorDeEdad'=>'fecha_nacimiento'
+				)
 		));
 	}
 	//con getName se define un nombre único para el formulario
