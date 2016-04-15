@@ -113,5 +113,50 @@ class DefaultController extends Controller
     			);
     }
     
+    public function perfilAction(Request $peticion)
+    {
+    	// Obtener los datos del usuario logueado y utilizarlos para
+    	// rellenar un formulario de registro.
+    	//
+    	// Si la petición es GET, mostrar el formulario
+    	// Si la petición es POST, actualizar la información del usuario con
+    	// los nuevos datos obtenidos del formulario
+    	
+    	$usuario=$this->get('security.context')->getToken()->getUser();
+    	$formulario=$this->createForm(new UsuarioType(), $usuario);
+    	//Hay que eliminar el botón del formulario que pone Regisrarme y añadir otro que ponga Guardar cambios
+    	$formulario
+    		->remove('registrarme')
+    		->add('guardar','submit',array('label'=>'Guardar cambios'));
+    	
+    	//guardamos una copia del password antiguo
+    	$passwordOriginal=$formulario->getData()->getPassword();
+    	$formulario->handleRequest($peticion);
+    	
+    	if ($formulario->isValid()){
+    		//si no quiere modificar el password, estará en blanco. Para que no introduzca el valor null en la DB, le pasamos la copia del password antiguo.
+    		//en caso contrario, codificamos el nuevo password
+    		if(null==$usuario->getPassword()){
+    			$usuario->setPassword($passwordOriginal);
+    		}else{
+    			$encoder=$this->get('security.encoder_factory')->getEncoder($usuario);
+    			$passwordCodificado=$encoder->encodePassword($usuario->getPassword(), $usuario->getSalt());
+    			$usuario->setPassword($passwordCodificado);
+    		}
+    		//actualizar perfil de usuario
+    		$em=$this->getDoctrine()->getManager();
+    		$em->persist($usuario);
+    		$em->flush();
+    		
+    		$this->get('session')->getFlashBag()->add('info', 'Los datos de tu perfil se han actualizado correctamente');
+    		return $this->redirect($this->generateUrl('usuario_perfil'));
+    	}
+    	
+    	return $this->render('UsuarioBundle:Default:perfil.html.twig', array(
+    			'usuario'=>$usuario,
+    			'formulario'=>$formulario->createView()
+    	));
+    }
+    
     
 }

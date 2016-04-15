@@ -1,0 +1,34 @@
+{% extends '::frontend.html.twig' %}
+
+{% block id 'usuario' %}
+{% block title %}Ver / Modificar mis datos{% endblock %}
+
+{% block article %}
+	<h1>{{ block ('title') }}</h1>
+	{{ form_start(formulario) }}
+		<div class="errors">
+			{{ form_errors(formulario) }}
+		</div>
+		<div>
+			{{ form_row(formulario.nombre) }}
+		</div>
+		<div>
+			{{ form_row(formulario.apellidos) }}
+		</div>
+		<div>		
+			{{ form_row(formulario.fecha_nacimiento) }}
+		</div>
+		<div>	
+			{{ form_row(formulario.dni) }}
+		</div>
+		<div>	
+			{{ form_row(formulario.direccion) }}
+		</div>
+		{#.....................#}	
+		<div>
+			{{ form_errors(formulario.permite_mail) }}
+			{{ form_widget(formulario.permite_mail) }}
+			<span>Me gustaría recibir el boletín de ofertas de Cupon</span>
+		</div>
+	{{ form_end(formulario) }}		
+{% endblock %}	
