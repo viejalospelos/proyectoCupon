@@ -1,0 +1,30 @@
+{% extends '::base.rss.twig' %}
+            {% block title %}{% spaceless %}Ofertas recientes en {{ ciudad.nombre }}{% endspaceless %}{% endblock %}
+    {#se usa la función url en vez de path para generar rutas absolutas#}
+            {% block url %}{% spaceless %} {{ url('ciudades_recientes', { 'ciudad': ciudad.slug }) }} {% endspaceless %}{% endblock %}
+            {% block descripcion %}{% spaceless %}Las ofertas más recientes publicadas por Cupon en {{ ciudad.nombre }}{% endspaceless %}{% endblock %}
+
+            {% block self %}{% spaceless %} {{ url('ciudades_recientes',{'ciudad': ciudad.slug, '_format': 'rss'}) }}{% endspaceless %}{% endblock %}
+
+{% block items %}
+{# bucle para cada oferta #}
+	{% for oferta in ofertas %}
+	{#variable que guarda la ruta absoluta de la foto#}
+	{% set urlAbsolutaFoto = 'http://'
+							~ app.request.server.get('SERVER_NAME')
+							~ asset (directorio_imagenes ~ oferta.rutaFoto)
+	%}
+	                <item>
+	                    <title>{{ oferta.nombre }}</title>
+	                    <link>{{ url('ofertas', { 'ciudad': oferta.ciudad.slug, 'slug': oferta.slug }) }}</link>
+	                    <description>
+	                        <![CDATA[
+	    <img alt="" src="{{ urlAbsolutaFoto }}"/>
+	    {{ oferta.descripcion | mostrar_como_lista }}
+	    <a href="#">Comprar</a>
+	    ]]></description>
+	                    <pubDate>{{ oferta.fechaPublicacion | date('r') }}</pubDate>
+	                    <guid>{{ url('ofertas', { 'ciudad': oferta.ciudad.slug, 'slug': oferta.slug }) }}</guid>
+	                </item>
+	{% endfor %}
+{% endblock %}

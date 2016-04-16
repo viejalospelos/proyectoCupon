@@ -36,7 +36,10 @@ class DefaultController extends Controller
     	$cercanas=$em->getRepository('CiudadBundle:Ciudad')->findCercanas($ciudad->getId());
     	$ofertas=$em->getRepository('OfertaBundle:Oferta')->findRecientes($ciudad->getId());
     	
-    	return $this->render('CiudadBundle:Default:recientes.html.twig', array(
+    	//para manejar el rss y el html
+    	$formato=$this->get('request')->getRequestFormat();
+    	
+    	return $this->render('CiudadBundle:Default:recientes.'.$formato.'.twig', array(
     			'ciudad'=>$ciudad,
     			'cercanas'=>$cercanas,
     			'ofertas'=>$ofertas

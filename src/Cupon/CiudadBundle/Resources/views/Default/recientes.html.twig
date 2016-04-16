@@ -3,6 +3,11 @@
 {% block title %}Ofertas recientes en {{ ciudad.nombre }}{% endblock %}
 {% block id 'recientes' %}
 
+{% block rss %}
+	<link rel="alternate" type="application/rss+xml" title="RSS de las ofertas más recientes en {{ ciudad.nombre }}" href="{{ path('ciudades_recientes',{'ciudad':ciudad.slug, '_format':'rss'}) }}" />
+	<!DOCTYPE link PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+{% endblock %}
+
 {% block article %}
 	<h1>Ofertas recientes en <strong>{{ ciudad.nombre }}</strong></h1>
 	{% for oferta in ofertas %}
