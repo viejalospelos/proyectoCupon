@@ -13,4 +13,10 @@ services:
         class: Cupon\OfertaBundle\Twig\Extension\CuponExtension
         tags: 
             - { name: twig.extension }
+
+# Cada vez que se produzca un evento kernel.request, ejecutará la clase OfertaBundle/Listener/RequestListener.php-RequestListener para poder devolver formatos pdf
+    cupon.ofertabundle.listener.request:
+        class: Cupon\OfertaBundle\Listener\RequestListener
+        tags:
+            -{ name: kernel.event_listener, event: kernel.request }            
                   

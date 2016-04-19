@@ -1,3 +1,5 @@
 tienda_portada:
-    path:     /{ciudad}/tiendas/{tienda}
-    defaults: { _controller: TiendaBundle:Default:portada }
+    path:     /{ciudad}/tiendas/{tienda}.{_format}
+    defaults: { _controller: TiendaBundle:Default:portada, _format: html }
+    requirements:
+        _format: html|rss

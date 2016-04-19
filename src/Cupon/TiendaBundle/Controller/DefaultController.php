@@ -27,7 +27,10 @@ class DefaultController extends Controller
         		$tienda->getCiudad()->getSlug()
         		);
         
-        return $this->render('TiendaBundle:Default:portada.html.twig', array(
+        //compatibilizando con rss
+        $formato=$this->get('request')->getRequestFormat();
+        
+        return $this->render('TiendaBundle:Default:portada.'.$formato.'.twig', array(
         		'tienda'=>$tienda,
         		'ofertas'=>$ofertas,
         		'cercanas'=>$cercanas
