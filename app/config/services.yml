@@ -18,5 +18,5 @@ services:
     cupon.ofertabundle.listener.request:
         class: Cupon\OfertaBundle\Listener\RequestListener
         tags:
-            -{ name: kernel.event_listener, event: kernel.request }            
+            - { name: kernel.event_listener, event: kernel.request }            
                   

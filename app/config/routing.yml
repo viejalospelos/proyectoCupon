@@ -1,25 +1,35 @@
 # usamos prefix para que todas las rutas de usuario contengan .../usuario/... y no tener que reseñarlo en cada ruta de routing.yml del bundle
 usuario:
     resource: "@UsuarioBundle/Resources/config/routing.yml"
-    prefix:   /usuario
+    prefix:   /{_locale}/usuario
+    requirements:
+        _locale: en|es
 
 tienda:
     resource: "@TiendaBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /{_locale}
+    requirements:
+        _locale: en|es
 
 ciudad:
     resource: "@CiudadBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /{_locale}
+    requirements:
+        _locale: en|es
 
 oferta:
     resource: "@OfertaBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /{_locale}
+    requirements:
+        _locale: en|es
 
 # gestión de páginas estáticas
 #ej ruta http://localhost/Cupon/web/app_dev.php/sitio/ayuda
 pagina_estatica:
-    path: /sitio/{pagina}/
+    path: /{_locale}/sitio/{pagina}/
     defaults: { _controller:OfertaBundle:Sitio:estatica}
+    requirements:
+        _locale: en|es
 # otra opción para gestionar páginas estáticas mediante la creación y enlace a un archivo app/config/routing_paginas.yml
 #ej ruta http://localhost/Cupon/web/app_dev.php/pagina/ayuda    
 _paginas_estaticas:
@@ -29,8 +39,10 @@ _paginas_estaticas:
 
 # ruta a la página principal.
 portada:
-    path: /{ciudad}
-    defaults: {_controller:OfertaBundle:Default:portada, ciudad: 'madrid'}
+    path: /{_locale}/{ciudad}
+    defaults: {_controller:OfertaBundle:Default:portada, ciudad: 'madrid', _locale: es}
+    requirements:
+        _locale: en|es
 # Esta ruta se redirigirá a portada en el controlador porque es obligatorio que aparezca el slash con la ciudad    
 #_portada:
 #    path: /

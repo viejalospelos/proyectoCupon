@@ -26,9 +26,9 @@ security:
 # login y registro se marcan como IS_AUTENTICATED_ANONYMOUSLY para que se pueda acceder a ellos como usuario anónimo
 # el resto de path .../usuario/... sólo se podrá acceder si se está autenticado
 # el orden aquí es importante, el último path/roles que hay que poner es { path: ^/usuario/*, roles: ROLE_USUARIO }, es decir, las excepciones siempre van antes
-        - { path: ^/usuario/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/usuario/registro, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/usuario/*, roles: ROLE_USUARIO }
+        - { path: ^/(es|en)/usuario/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/(es|en)/usuario/registro, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/(es|en)/usuario/*, roles: ROLE_USUARIO }
         
     providers:
 # los proveedores son los encargados de crear los usuarios de la aplicación
