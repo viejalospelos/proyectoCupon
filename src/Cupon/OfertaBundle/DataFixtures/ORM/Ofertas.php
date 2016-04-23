@@ -92,6 +92,16 @@ class Ofertas extends AbstractFixture implements OrderedFixtureInterface, Contai
 
                 $manager->persist($oferta);
                 $manager->flush();
+                
+                //Traducir los contenidos de la ferta al inglés
+                /*$id=$oferta->getId();
+                $offer=$manager->find('OfertaBundle:Oferta', $id);
+                $offer->setNombre('ENGLISH'.$oferta->getNombre());
+                $offer->setDescripcion('ENGLISH'.$oferta->getDescripcion());
+                $offer->setTranslatableLocale('en');
+                
+                $manager->persist($offer);
+                $manager->flush();*/
             }
         }
     }

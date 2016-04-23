@@ -1,4 +1,9 @@
 {% extends '::base.html.twig' %} 
+{% set ciudadSeleccionada=app.request.attributes.has('ciudad')
+? app.request.attributes.get('ciudad')
+            : ciudad_por_defecto 
+%}
+
 {% block stylesheets %}
 	<link href="{{ asset('bundles/oferta/css/normalizar.css') }}"rel="stylesheet" type="text/css" />
 	<link href="{{ asset('bundles/oferta/css/comun.css') }}"rel="stylesheet" type="text/css" />
@@ -10,14 +15,11 @@
     <h1><a href="{{ path('portada') }}">CUPON</a></h1>
     <nav>
         <ul>
-            <li><a href="{{ path('portada') }}">Oferta del día</a></li>
-            <li><a href="#">Ofertas recientes</a></li>
-            <li><a href="#">Mis ofertas</a></li>
-            {#método render para consultar la lista de ciudades para el desplegable #}
-            {% set ciudadSeleccionada=app.request.attributes.has('ciudad')
-            ? app.request.attributes.get('ciudad')
-            : ciudad_por_defecto 
-            %}
+            <li><a href="{{ path('portada', { 'ciudad': ciudadSeleccionada }) }}">{% trans %}Oferta del día{% endtrans %}</a></li>
+            <li><a href="{{ path('ciudades_recientes', { 'ciudad': ciudadSeleccionada }) }}">{{ "Ofertas recientes" | trans }}</a></li>
+            <li><a href="{{ path('usuario_compras') }}">{{ "Mis ofertas" | trans }}</a></li>
+            
+{#método render para consultar la lista de ciudades para el desplegable #}
             <li>{{ render(controller('CiudadBundle:Default:listaCiudades', {'ciudad': ciudadSeleccionada})) }} </li>
         </ul>
     </nav>

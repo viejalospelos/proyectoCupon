@@ -4,6 +4,8 @@ namespace Cupon\OfertaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Cupon\OfertaBundle\Util\Util;
+//use Gedmo\Mapping\Annotation as Gedmo;
+//use Gedmo\Translatable\Translatable;
 
 /**
  * Oferta
@@ -24,7 +26,7 @@ class Oferta
 
     /**
      * @var string
-     *
+     * 
      * @ORM\Column(name="nombre", type="string", length=255)
      */
     private $nombre;
@@ -119,7 +121,22 @@ class Oferta
      * @ORM\ManyToOne(targetEntity="Cupon\TiendaBundle\Entity\Tienda")
      */
     private $tienda;
+    
+    
+    //Gestión de las traducciones
+    /*
+    **
+     * @Gedmo\Locale
+     *
+    private $locale;
+    
+    public function setTranslatableLocale($locale)
+    {
+    	$this->locale=$locale;
+    }
 
+    */
+    
 
     /**
      * Get id

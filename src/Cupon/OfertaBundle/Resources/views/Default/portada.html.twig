@@ -8,7 +8,7 @@
 	
 	<section class="estado">
 	    <div class="tiempo">
-	        <strong>Faltan</strong>: {{ oferta.fechaExpiracion | date() }}
+	        <strong>Faltan</strong>: {{ oferta.fechaExpiracion | localizeddate('medium','medium') }}
 	    </div>
 	    <div class="compras">
 	        <strong>Compras</strong>: {{ oferta.compras }}

@@ -41,4 +41,6 @@ security:
     encoders:
 # configura como se codifican las contraseñas (plaintext, sha512)
 # en iterations marcamos el número de veces que se codifica. Si no ponemos nada será igual a 5000 veces y tarda mucho en hacerlo    
-        Cupon\UsuarioBundle\Entity\Usuario: plaintext                   
+        Cupon\UsuarioBundle\Entity\Usuario:        { algorithm: sha512, iterations: 10 }
+        Cupon\TiendaBundle\Entity\Tienda:          { algorithm: sha512, iterations: 10 }
+                           
