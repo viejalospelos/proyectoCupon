@@ -3,6 +3,7 @@
 namespace Cupon\OfertaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Cupon\OfertaBundle\Util\Util;
 //use Gedmo\Mapping\Annotation as Gedmo;
 //use Gedmo\Translatable\Translatable;
@@ -40,14 +41,15 @@ class Oferta
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
+     * @Assert\Length(min = 30)
      * @ORM\Column(name="descripcion", type="text")
      */
     private $descripcion;
 
     /**
      * @var string
-     *
+     * 
      * @ORM\Column(name="condiciones", type="text")
      */
     private $condiciones;
@@ -61,8 +63,8 @@ class Oferta
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="precio", type="decimal")
+     * @Assert\Range(min = 0)
+     * @ORM\Column(name="precio", type="decimal", scale=2)
      */
     private $precio;
 
@@ -75,15 +77,15 @@ class Oferta
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="fecha_publicacion", type="datetime")
+     * @Assert\DateTime
+     * @ORM\Column(name="fecha_publicacion", type="datetime", nullable=true)
      */
     private $fechaPublicacion;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="fecha_expiracion", type="datetime")
+     * @Assert\DateTime
+     * @ORM\Column(name="fecha_expiracion", type="datetime", nullable=true)
      */
     private $fechaExpiracion;
 
@@ -96,7 +98,8 @@ class Oferta
 
     /**
      * @var integer
-     *
+     * @Assert\Type(type="integer")
+     * @Assert\Range(min = 0)
      * @ORM\Column(name="umbral", type="integer")
      */
     private $umbral;
@@ -121,6 +124,19 @@ class Oferta
      * @ORM\ManyToOne(targetEntity="Cupon\TiendaBundle\Entity\Tienda")
      */
     private $tienda;
+    
+    
+    /**
+     * @Assert\True(message = "La fecha de expiración debe ser posterior a la fecha de publicación")
+     */
+    public function isFechaValida()
+    {
+    	if ($this->fechaPublicacion == null || $this->fechaExpiracion == null) {
+    		return true;
+    	}
+    
+    	return $this->fechaExpiracion > $this->fechaPublicacion;
+    }
     
     
     //Gestión de las traducciones
