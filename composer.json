@@ -23,7 +23,8 @@
 		"incenteev/composer-parameter-handler" : "~2.0",
 		"doctrine/doctrine-fixtures-bundle" : "dev-master",
 		"doctrine/data-fixtures" : "dev-master",
-		"stof/doctrine-extensions-bundle": "dev-master"
+		"stof/doctrine-extensions-bundle": "dev-master",
+		"phpunit/phpunit": "3.*"
 	},
 	"scripts" : {
 		"post-install-cmd" : [
