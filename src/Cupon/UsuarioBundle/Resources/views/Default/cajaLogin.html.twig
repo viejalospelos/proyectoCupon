@@ -12,7 +12,7 @@
 	
 {% else %}	
 {#para el usuario NO logeado#}
-	<a class="boton" href="{{ path('usuario_registro') }}">Regístrate</a>
+	<a class="boton" href="{{ path('usuario_registro') }}">Regístrate ya</a>
 	<h2>Accede a tu cuenta</h2>
 	<form action="{{ path('usuario_login_check') }}" method="post">
 		{% if error %}

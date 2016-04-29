@@ -40,7 +40,7 @@ _paginas_estaticas:
 # ruta a la página principal.
 portada:
     path: /{_locale}/{ciudad}
-    defaults: {_controller:OfertaBundle:Default:portada, ciudad: 'madrid', _locale: es}
+    defaults: {_controller:OfertaBundle:Default:portada, ciudad: '%cupon.ciudad_por_defecto%', _locale: es}
     requirements:
         _locale: en|es
 # Esta ruta se redirigirá a portada en el controlador porque es obligatorio que aparezca el slash con la ciudad    
