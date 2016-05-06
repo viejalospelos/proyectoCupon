@@ -38,6 +38,6 @@ class UsuarioType extends AbstractType
 	}
 	//con getName se define un nombre único para el formulario
 	public function getName(){
-		return 'cupon_usuariobundle_usuariotype';
+		return 'frontend_usuario';
 	}
 }
