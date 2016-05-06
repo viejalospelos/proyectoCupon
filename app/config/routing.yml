@@ -57,3 +57,8 @@ _portada:
 ofertas:
     path:    /{ciudad}/ofertas/{slug}
     defaults:    { _controller: OfertaBundle:Default:oferta }
+
+#indicamos el prefix en la parte de extranet para no tener que repetirlo en el routing.yml propio de la extranet    
+Extranet:
+    resource: '@TiendaBundle/Resources/config/extranet/routing.tml'  
+    prefix:    /extranet  
