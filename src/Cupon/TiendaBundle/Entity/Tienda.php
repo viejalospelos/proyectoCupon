@@ -3,6 +3,7 @@ namespace Cupon\TiendaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Cupon\OfertaBundle\Util\Util;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="Cupon\TiendaBundle\Entity\TiendaRepository")
@@ -10,7 +11,25 @@ use Cupon\OfertaBundle\Util\Util;
  *
  */
 
-class Tienda {
+class Tienda implements UserInterface {
+	function eraseCredentials()
+	{	
+	}
+	
+	function getRoles()
+	{
+		return array('ROLE_TIENDA');
+	}
+	
+	function getUsername()
+	{
+		return $this->getLogin();
+	}
+//No tenemos que añadir los métodos getSalt ni getPassword porque ya existían en la entidad
+
+	
+	
+	
 	/**
 	 * 
 	 * @ORM\Id

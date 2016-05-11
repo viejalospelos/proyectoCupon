@@ -16,4 +16,14 @@ extranet_oferta_ventas:
     
 extranet_perfil:
     path:    /perfil
-    defaults: { _controller: TiendaBundle:Extranet:perfil }           
+    defaults: { _controller: TiendaBundle:Extranet:perfil }        
+    
+extranet_login:
+    pattern:    /login
+    defaults: { _controller: TiendaBundle:Extranet:login }
+    
+extranet_login_check:
+    pattern:    /login_check
+    
+extranet_logout:
+    pattern:    /logout               

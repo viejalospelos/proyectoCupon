@@ -60,5 +60,5 @@ ofertas:
 
 #indicamos el prefix en la parte de extranet para no tener que repetirlo en el routing.yml propio de la extranet    
 Extranet:
-    resource: '@TiendaBundle/Resources/config/extranet/routing.tml'  
+    resource: '@TiendaBundle/Resources/config/extranet/routing.yml'  
     prefix:    /extranet  

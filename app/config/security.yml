@@ -1,9 +1,11 @@
 security:
 # el firewall protege partes enteras de la aplicación (urls)
 # en pattern iría la url o REGEX
-# en este caso la REGEX indica que todas las urls de la app están protegidas por él, es decir, 
+# en este caso (frontend)la REGEX indica que todas las urls de la app están protegidas por él, es decir, 
 # cualquier usuario que quiera acceder a la app tiene que estar loggeado pero la opción annonymous permite el acceso a usuarios anónimos
 # la opción form_login indica cómo se tienen que loggear. Otras opciones: http_basic (típica caja de usuario/contraseña), http_digest (típica caja de usuario/contraseña), x509. Todos estos excepto form_login exigen la opción provider
+    
+    # Firewall global utilizado en la parte pública o frontend
     firewalls:
         frontend:
             pattern:    ^/*
@@ -17,7 +19,17 @@ security:
                 key:    cupon1234
                 lifetime: 3600
             switch_user: true
-                
+     # Firewall de la extranet a la que se conectan las tiendas
+        extranet:
+            pattern:        ^/extranet
+            provider:       tiendas
+            anonymous:      ~
+            form_login:
+                login_path: /extranet/login
+                check_path: /extranet/login_check
+            logout:
+                path:       /extranet/logout
+                target:     /extranet           
                
                     
         
@@ -29,18 +41,25 @@ security:
         - { path: ^/(es|en)/usuario/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/(es|en)/usuario/registro, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/(es|en)/usuario/*, roles: ROLE_USUARIO }
+        - { path: ^/extranet/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/extranet/*, roles: ROLE_TIENDA }
         
     providers:
 # los proveedores son los encargados de crear los usuarios de la aplicación
 # hay 2 tipos de proveedores: memory (los usuarios se crean en memoria con los datos incluidos en el propio archivo security.yml)
 # y los entity que se crean a partir de objetos doctrine
 # se pueden definir varios proveedores, ej: para usuarios y tiendas y encadenarlos en un superproveedor  
+     # Usuarios del frontend
         usuarios:
             entity: { class: Cupon\UsuarioBundle\Entity\Usuario, property: email }
+     # Usuarios de la extranet
+        tiendas:
+            entity: { class: Cupon\TiendaBundle\Entity\Tienda, property: login }       
             
     encoders:
 # configura como se codifican las contraseñas (plaintext, sha512)
 # en iterations marcamos el número de veces que se codifica. Si no ponemos nada será igual a 5000 veces y tarda mucho en hacerlo    
         Cupon\UsuarioBundle\Entity\Usuario:        { algorithm: sha512, iterations: 10 }
         Cupon\TiendaBundle\Entity\Tienda:          { algorithm: sha512, iterations: 10 }
-                           
+        
+
