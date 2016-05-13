@@ -61,5 +61,9 @@ security:
 # en iterations marcamos el número de veces que se codifica. Si no ponemos nada será igual a 5000 veces y tarda mucho en hacerlo    
         Cupon\UsuarioBundle\Entity\Usuario:        { algorithm: sha512, iterations: 10 }
         Cupon\TiendaBundle\Entity\Tienda:          { algorithm: sha512, iterations: 10 }
-        
+
+# cambiamos el modo de decisión de los voters de affirmative (con que un solo voter diga que si, se autoriza) a
+# unanimous (todos los voters tienen que decir si apra que se autorice)
+    access_decision_manager:
+         strategy: unanimous         
 
