@@ -21,4 +21,16 @@ class ExtranetController extends Controller
 				'error'=>$error
 		));
 	}
+	
+	public function portadaAction()
+	{
+		$em=$this->getDoctrine()->getManager();
+		
+		$tienda=$this->get('security.context')->getToken()->getUser();
+		$ofertas=$em->getRepository('TiendaBundle:Tienda')->findOfertasRecientes($tienda->getId());
+		
+		return $this->render('TiendaBundle:Extranet:portada.html.twig', array(
+				'ofertas'=>$ofertas
+		));
+	}
 }

@@ -5,20 +5,10 @@ security:
 # cualquier usuario que quiera acceder a la app tiene que estar loggeado pero la opción annonymous permite el acceso a usuarios anónimos
 # la opción form_login indica cómo se tienen que loggear. Otras opciones: http_basic (típica caja de usuario/contraseña), http_digest (típica caja de usuario/contraseña), x509. Todos estos excepto form_login exigen la opción provider
     
-    # Firewall global utilizado en la parte pública o frontend
+
     firewalls:
-        frontend:
-            pattern:    ^/*
-            anonymous:    ~
-            form_login: 
-                login_path: usuario_login
-                check_path: usuario_login_check
-            logout:
-                path: usuario_logout   
-            remember_me:
-                key:    cupon1234
-                lifetime: 3600
-            switch_user: true
+    
+
      # Firewall de la extranet a la que se conectan las tiendas
         extranet:
             pattern:        ^/extranet
@@ -30,7 +20,22 @@ security:
             logout:
                 path:       /extranet/logout
                 target:     /extranet           
-               
+    
+    # Firewall global utilizado en la parte pública o frontend    
+    # OJO: el firewall del frontend tiene que ir después del de la extranet porque si no, sigue el pattern ^/* y al coincidir se salta el de la extranet y te genera una redirección a usuario_login si sigues la ruta http://localhost/Cupon/web/app_dev.php/extranet
+        frontend:
+            pattern:    ^/*
+            provider:    usuarios
+            anonymous:    ~
+            form_login: 
+                login_path: usuario_login
+                check_path: usuario_login_check
+            logout:
+                path: usuario_logout   
+            remember_me:
+                key:    cupon1234
+                lifetime: 3600
+            switch_user: true               
                     
         
     access_control:
@@ -65,5 +70,6 @@ security:
 # cambiamos el modo de decisión de los voters de affirmative (con que un solo voter diga que si, se autoriza) a
 # unanimous (todos los voters tienen que decir si apra que se autorice)
     access_decision_manager:
-         strategy: unanimous         
+         strategy: unanimous     
+             
 
