@@ -33,4 +33,16 @@ class ExtranetController extends Controller
 				'ofertas'=>$ofertas
 		));
 	}
+	
+	public function ofertaVentasAction($id)
+	{
+		$em=$this->getDoctrine()->getManager();
+		
+		$ventas=$em->getRepository('OfertaBundle:Oferta')->findVentasByOferta($id);
+		
+		return $this->render('TiendaBundle:Extranet:ventas.html.twig', array(
+				'oferta'=>$ventas[0]->getOferta(),
+				'ventas'=>$ventas
+		));
+	}
 }

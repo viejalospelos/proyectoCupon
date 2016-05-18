@@ -77,4 +77,22 @@ class OfertaRepository extends EntityRepository{
 		$consulta->setParameter('fecha', new \DateTime('today'));
 		return $consulta->getResult();
 	}
+	
+	//extranet
+	
+	public function findVentasByOferta($oferta)
+	{
+		$em=$this->getEntityManager();
+		
+		$consulta=$em->createQuery('
+				SELECT v, o, u
+				FROM OfertaBundle:Venta v
+				JOIN v.oferta o JOIN v.usuario u
+				WHERE o.id= :id
+				ORDER BY v.fecha DESC
+				');
+		$consulta->setParameter('id', $oferta);
+		
+		return $consulta->getResult();
+	}
 }
