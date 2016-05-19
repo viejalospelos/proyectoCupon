@@ -5,6 +5,7 @@ namespace Cupon\TiendaBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContext;
+use Cupon\TiendaBundle\Form\Extranet\TiendaType;
 
 class ExtranetController extends Controller
 {
@@ -43,6 +44,39 @@ class ExtranetController extends Controller
 		return $this->render('TiendaBundle:Extranet:ventas.html.twig', array(
 				'oferta'=>$ventas[0]->getOferta(),
 				'ventas'=>$ventas
+		));
+	}
+	
+	public function perfilAction(Request $peticion)
+	{
+		$tienda=$this->get('security.context')->getToken()->getUser();
+		$formulario=$this->createForm(new TiendaType(), $tienda);
+		$passwordOriginal=$formulario->getData()->getPassword();
+		
+		$formulario->handleRequest($peticion);
+		
+		if ($formulario->isValid()){
+			if (null==$tienda->getPassword()){
+				$tienda->setPassword($passwordOriginal);
+			}else{
+				$encoder=$this->get('security.encoder_factory')->getEncoder($tienda);
+				$passwordCodificado=$encoder->encodePassword(
+						$tienda->getPassword(),
+						$tienda->getSalt()
+						);
+				$tienda->setPassword($passwordCodificado);
+			}
+			$em=$this->getDoctrine()->getManager();
+			$em->persist($tienda);
+			$em->flush();
+			
+			$this->get('session')->getFlashBag()->add('info', 'Los datos de tu perfil se han actualizado correctamente');
+			return $this->redirect($this->generateUrl('extranet_portada'));
+		}
+		
+		return $this->render('TiendaBundle:Extranet:perfil.html.twig', array(
+				'tienda'=>$tienda,
+				'formulario'=>$formulario->createView()
 		));
 	}
 }
