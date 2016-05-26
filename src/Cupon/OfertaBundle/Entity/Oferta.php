@@ -7,6 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Cupon\OfertaBundle\Util\Util;
 //use Gedmo\Mapping\Annotation as Gedmo;
 //use Gedmo\Translatable\Translatable;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Oferta
@@ -29,6 +30,7 @@ class Oferta
      * @var string
      * 
      * @ORM\Column(name="nombre", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $nombre;
 
@@ -36,6 +38,7 @@ class Oferta
      * @var string
      *
      * @ORM\Column(name="slug", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $slug;
 
@@ -48,7 +51,6 @@ class Oferta
     private $descripcion;
 
     /**
-     * @var string
      * 
      * @ORM\Column(name="condiciones", type="text")
      */
@@ -62,16 +64,14 @@ class Oferta
     private $rutaFoto;
 
     /**
-     * @var string
      * @Assert\Range(min = 0)
      * @ORM\Column(name="precio", type="decimal", scale=2)
      */
     private $precio;
 
     /**
-     * @var string
      *
-     * @ORM\Column(name="descuento", type="decimal")
+     * @ORM\Column(name="descuento", type="decimal", scale=2)
      */
     private $descuento;
 
@@ -125,6 +125,47 @@ class Oferta
      */
     private $tienda;
     
+ // Para poder subir fotos de la oferta   *****************************************
+ // la propiedad foto no se va a guardar en la db porque no tiene la anotación @ORM\Column
+    
+    /**
+     * @Assert\Image(maxSize="500k")
+     */
+    protected $foto;
+    
+    /**
+     * @param UploadesFile $foto
+     */
+    public function setFoto(UploadedFile $foto=null)
+    {
+    	$this->foto=$foto;
+    }
+    
+    /**
+     * @return UploadedFile
+     */
+    public function getFoto()
+    {
+    	return $this->foto;
+    }
+    
+  //Método para subir las fotos*****************************************************************
+  
+    public function subirFoto($directorioDestino)
+    {
+    	if (null===$this->foto){
+    		return ;
+    	}
+
+    	$nombreArchivoFoto=uniqid('cupon-').'foto1.jpg';
+    	//si quisieramos mantener el nombre original $nombreArchivoFoto = $this->foto->getClientOriginalName();
+    	
+    	$this->foto->move($directorioDestino, $nombreArchivoFoto);
+    	
+    	$this->setRutaFoto($nombreArchivoFoto);
+    }
+  
+ //*********************************************************************************************** 
     
     /**
      * @Assert\True(message = "La fecha de expiración debe ser posterior a la fecha de publicación")

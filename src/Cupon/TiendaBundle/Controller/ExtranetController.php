@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContext;
 use Cupon\TiendaBundle\Form\Extranet\TiendaType;
+use Cupon\OfertaBundle\Entity\Oferta;
+use Cupon\OfertaBundle\Form\Extranet\OfertaType;
 
 class ExtranetController extends Controller
 {
@@ -76,6 +78,35 @@ class ExtranetController extends Controller
 		
 		return $this->render('TiendaBundle:Extranet:perfil.html.twig', array(
 				'tienda'=>$tienda,
+				'formulario'=>$formulario->createView()
+		));
+	}
+	
+	public function ofertaNuevaAction(Request $peticion)
+	{
+		$oferta=new Oferta();
+		$formulario=$this->createForm(new OfertaType(), $oferta);
+		
+		$formulario->handleRequest($peticion);
+		
+		if ($formulario->isValid()){
+			$tienda=$this->get('security.context')->getToken()->getUser();
+			
+			$oferta->setCompras(0);
+			$oferta->setRevisada(false);
+			$oferta->setTienda($tienda);
+			$oferta->setCiudad($tienda->getCiudad());
+			
+			$oferta->subirFoto($this->container->getParameter('cupon.directorio.imagenes'));
+			
+			$em=$this->getDoctrine()->getManager();
+			$em->persist($oferta);
+			$em->flush();
+			
+			return $this->redirect($this->generateUrl('extranet_portada'));
+		}
+		
+		return $this->render('TiendaBundle:Extranet:formulario.html.twig', array(
 				'formulario'=>$formulario->createView()
 		));
 	}
