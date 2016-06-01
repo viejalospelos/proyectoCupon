@@ -24,14 +24,18 @@ class OfertaType extends AbstractType {
 					'attr'=>array('class'=>'boton')
 			))
 		;
-		
-		$builder->add('acepto', 'checkbox', array(
-				'mapped'=> false,
-				'required'=> false
-		));
-		
-		$listener= new OfertaTypeListener();
-		$builder->addEventListener(FormEvents::PRE_SUBMIT, array($listener, 'preSubmit'));
+//El campo adicional acepto sólo se debe incluir cuando se añade una oferta, no cuando
+//se modifica. Se comprueba el valor de la propiedad id de la entidad: si vale null, la
+//entidad todavía no se ha guardado en la base de datos y por tanto se está creando		
+		if (null==$options['data']->getId()){
+			$builder->add('acepto', 'checkbox', array(
+					'mapped'=> false,
+					'required'=> false
+			));
+			
+			$listener= new OfertaTypeListener();
+			$builder->addEventListener(FormEvents::PRE_SUBMIT, array($listener, 'preSubmit'));
+		}
 	}
 	
 	public function setDefaultOptions(OptionsResolverInterface $resolver)

@@ -8,6 +8,9 @@ use Symfony\Component\Security\Core\SecurityContext;
 use Cupon\TiendaBundle\Form\Extranet\TiendaType;
 use Cupon\OfertaBundle\Entity\Oferta;
 use Cupon\OfertaBundle\Form\Extranet\OfertaType;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
 class ExtranetController extends Controller
 {
@@ -107,6 +110,64 @@ class ExtranetController extends Controller
 		}
 		
 		return $this->render('TiendaBundle:Extranet:formulario.html.twig', array(
+				'accion'=>'crear',
+				'formulario'=>$formulario->createView()
+		));
+	}
+	
+	public function ofertaEditarAction(Request $peticion, $id)
+	{
+		$em=$this->getDoctrine()->getManager();
+		$oferta=$em->getRepository('OfertaBundle:Oferta')->find($id);
+		
+		if (!$oferta){
+			throw $this->createNotFoundException('La oferta no existe');
+		}
+// La siguiente comprobación depende del voter	
+// La gestión del voter no funciona bien y no logro dar con el fallo por lo que lo dejo comentado
+		/*$contexto=$this->get('security.context');
+		if (false===$contexto->isGranted('ROLE:EDITAR_OFERTA', $oferta)){
+			throw new AccessDeniedException();
+		}*/
+		
+		if ($oferta->getRevisada()){
+			$this->get('session')->getFlashBag()->add('error', 'La oferta no se puede modificar porque ya ha sido revisada');
+			return $this->redirect($this->generateUrl('extranet_portada'));
+		}
+		
+		$formulario=$this->createForm(new OfertaType(), $oferta);
+//la foto hay que tratarla a parte porque si la tienda no cambia de foto, la foto antigua se pierde	y si la cambia no se actualiza correctamente	
+		$rutaFotoOriginal=$formulario->getData()->getRutaFoto();
+		
+		$formulario->handleRequest($peticion);
+		
+		if ($formulario->isValid()){
+			
+			if (null==$oferta->getFoto()){
+				//la foto original no se modifica, recupera su ruta
+				$oferta->setRutaFoto($rutaFotoOriginal);
+			}else{
+				//la foto de la oferta se ha modificado
+				$directorioFotos=$this->container->getParameter('cupon.directorio.imagenes');
+				$oferta->subirFoto($directorioFotos);
+				//borrar la foto anterior
+				//se hace de manera diferente porque como viene en el libro no funciona
+				//hay que importar el componente Filesystem()
+			if (!empty($rutaFotoOriginal)) {
+                    $fs = new Filesystem();
+                    $fs->remove($this->container->getParameter('cupon.directorio.imagenes').$rutaFotoOriginal);
+                }
+			}
+			$em=$this->getDoctrine()->getManager();
+			$em->persist($oferta);
+			$em->flush();
+			
+			return $this->redirect($this->generateUrl('extranet_portada'));
+		}
+		
+		return $this->render('TiendaBundle:Extranet:formulario.html.twig', array(
+				'accion'=>'editar',
+				'oferta'=>$oferta,
 				'formulario'=>$formulario->createView()
 		));
 	}

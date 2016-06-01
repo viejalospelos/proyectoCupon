@@ -90,7 +90,7 @@ swiftmailer:
 # Se recupera en el controlador con container->getParameter('cupon.ciudad_por_defecto')
 parameters:
     cupon.ciudad_por_defecto: 'barcelona'   
-    cupon.directorio.imagenes: %kernel.root_dir%/../web/uploads/images  # %kernel.root_dir% = directorio app
+    cupon.directorio.imagenes: %kernel.root_dir%/../web/bundles/oferta/images  # %kernel.root_dir% = directorio app
 
 #Las traducciones dinámicas no funcan    
 #stof_doctrine_extensions:

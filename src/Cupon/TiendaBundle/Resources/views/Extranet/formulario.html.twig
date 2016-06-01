@@ -1,7 +1,10 @@
 {% extends '::extranet.html.twig' %} 
 
 {% block id 'oferta' %} 
-{% block title %}Añadir una nueva oferta{% endblock %} 
+{% block title %}{{ accion=='crear'
+	? 'Añadir una nueva oferta'
+	: 'Modificar la oferta' ~ oferta.nombre }}
+{% endblock %} 
 
 {% block article %}
 <h1>{{ block('title') }}</h1> 
@@ -24,6 +27,12 @@
     <div>
         {{ form_label(formulario.foto, 'Fotografía') }} 
         {{ form_errors(formulario.foto) }} 
+{#si se va a modificar la oferta, se muestra una miniatura con la foto actual #}        
+        {% if accion=='editar' %}
+        	<img src="{{ asset(directorio_imagenes ~ oferta.rutaFoto) }}" />
+        	{{ form_label(formulario.foto, 'Modificar foto') }}
+        {% endif %}	
+        
         {{ form_widget(formulario.foto) }}
         <p class="ayuda">Tamaño máximo: 500 KB. Formato preferido: JPEG.</p>
     </div>
@@ -39,10 +48,13 @@
         {{ form_widget(formulario.umbral)
         }}
     </div>
+{#Las condiciones legales sólo se muestran si estamos creando la oferta, no editándola#}    
+    {% if accion=='crear' %}
     <div>
 		{{ form_errors(formulario.acepto) }}
 		{{ form_widget(formulario.acepto) }} <span>Declaro que toda la información de esta oferta es correcta, que me comprometo a cumplir las condiciones prometidas y que dispongo de los medios necesarios para hacerlo.</span>
 	</div>
+	{% endif %}
 </div>
 {{ form_end(formulario) }} {% endblock %} 
 {% block aside %}
