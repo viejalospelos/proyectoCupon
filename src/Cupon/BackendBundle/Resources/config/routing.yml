@@ -1,0 +1,3 @@
+backend_ciudad_cambiar:
+    path:     /cambiar-a-/{ciudad}
+    defaults: { _controller: BackendBundle:Default:ciudadCambiar }

@@ -1,9 +1,22 @@
 <select id="ciudadseleccionada">
 	{% for ciudad in ciudades %}
-		<option value="{{ ciudad.slug }}"
+	{#hay que refactorizar el option value para hacerlo compatible con el backend. se queda comentado el antiguo#}
+	{#<option value="{{ ciudad.slug }}"
 			data-url="{{ url('ciudad_cambiar',{'ciudad':ciudad.slug}) }}"
-			{{ ciudadActual==ciudad.slug ? 'selected="selected' : '' }}>
+			{{ ciudadActual==ciudad.slug ? 'selected="selected"' : '' }}>
 			{{ ciudad.nombre }}
+		</option>	#}
+		
+		<option value="{{ ciudad.slug }}"
+			data-url="{{ is_granted('ROLE_ADMIN')
+			? url('backend_cambiar_ciudad', {'ciudad': ciudad.slug}) 
+			: url('ciudad_cambiar', {'ciudad': ciudad.slug})
+			}}"
+			
+			{{ ciudadActual==ciudad.slug 
+			? 'selected="selected"'
+			: ''}}>{{ ciudad.nombre }}
+
 		
 		</option>
 	{% endfor %}
