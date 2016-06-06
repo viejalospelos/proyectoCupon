@@ -8,6 +8,12 @@ security:
 
     firewalls:
     
+    # Firewall para el backend
+        backend:
+            pattern:    ^/backend
+            provider:   administradores
+            http_basic: ~
+    
 
      # Firewall de la extranet a la que se conectan las tiendas
         extranet:
@@ -53,7 +59,13 @@ security:
 # los proveedores son los encargados de crear los usuarios de la aplicación
 # hay 2 tipos de proveedores: memory (los usuarios se crean en memoria con los datos incluidos en el propio archivo security.yml)
 # y los entity que se crean a partir de objetos doctrine
-# se pueden definir varios proveedores, ej: para usuarios y tiendas y encadenarlos en un superproveedor  
+# se pueden definir varios proveedores, ej: para usuarios y tiendas y encadenarlos en un superproveedor 
+
+     # Usuarios del backend
+        administradores:
+            memory:
+                users:
+                    - { name: admin, password: 1234, roles: ROLE_ADMIN } 
      # Usuarios del frontend
         usuarios:
             entity: { class: Cupon\UsuarioBundle\Entity\Usuario, property: email }
@@ -64,6 +76,7 @@ security:
     encoders:
 # configura como se codifican las contraseñas (plaintext, sha512)
 # en iterations marcamos el número de veces que se codifica. Si no ponemos nada será igual a 5000 veces y tarda mucho en hacerlo    
+        Symfony\Component\Security\Core\User\User: plaintext  #backend
         Cupon\UsuarioBundle\Entity\Usuario:        { algorithm: sha512, iterations: 10 }
         Cupon\TiendaBundle\Entity\Tienda:          { algorithm: sha512, iterations: 10 }
 
@@ -71,5 +84,9 @@ security:
 # unanimous (todos los voters tienen que decir si apra que se autorice)
     access_decision_manager:
          strategy: unanimous     
+         
+# con la opción role_hierarchy indicamos que cualquier usuario con role admin tiene también roles de usuario y de tienda
+    role_hierarchy:
+        ROLE_ADMIN: [ROLE_TIENDA, ROLE_USUARIO]         
              
 
