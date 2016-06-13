@@ -1,0 +1,32 @@
+{% extends '::backend.html.twig' %}
+
+{% block id 'ciudad' %}
+{% block title %}Listado de ciudades{% endblock %}
+
+{% block article %}
+	<h1>{{ block('title') }}</h1>
+	
+	<table>
+		<thead>
+			<tr>
+				<th>Nombre</th>
+				<th>Slug</th>
+				<th>Acciones</th>
+			</tr>
+		</thead>
+		
+		<tbody>
+			{% for ciudad in ciudades %}
+				<tr>
+					<td>{{ ciudad.nombre }}</td>
+					<td>{{ ciudad.slug }}</td>
+					<td>
+						<a href="{{ path(backend_ciudad_actualizar, {'id': ciudad.id}) }}">Modificar</a>
+					</td>
+				</tr>
+			{% endfor %}			
+		</tbody>		
+	</table>
+	
+	<a href="{{ path('backend_ciudad_crear') }}">Crear una nueva ciudad</a>
+{% endblock %}

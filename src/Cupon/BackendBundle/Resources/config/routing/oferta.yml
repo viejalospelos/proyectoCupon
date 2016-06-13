@@ -1,0 +1,30 @@
+backend_oferta:
+    path:     /
+    defaults: { _controller: "BackendBundle:Oferta:index" }
+
+oferta_show:
+    path:     /{id}/show
+    defaults: { _controller: "BackendBundle:Oferta:show" }
+
+oferta_new:
+    path:     /new
+    defaults: { _controller: "BackendBundle:Oferta:new" }
+
+oferta_create:
+    path:     /create
+    defaults: { _controller: "BackendBundle:Oferta:create" }
+    methods:  POST
+
+oferta_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "BackendBundle:Oferta:edit" }
+
+oferta_update:
+    path:     /{id}/update
+    defaults: { _controller: "BackendBundle:Oferta:update" }
+    methods:  [POST, PUT]
+
+oferta_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "BackendBundle:Oferta:delete" }
+    methods:  [POST, DELETE]

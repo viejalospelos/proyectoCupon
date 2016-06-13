@@ -1,3 +1,12 @@
 backend_ciudad_cambiar:
     path:     /cambiar-a-/{ciudad}
     defaults: { _controller: BackendBundle:Default:ciudadCambiar }
+
+backendOferta:
+    resource: "@BackendBundle/Resources/config/routing/oferta.yml"
+    prefix: /oferta
+    
+backend_portada:
+    path: /backend
+    defaults: { _controller: BackendBundle:Oferta:index }    
+    

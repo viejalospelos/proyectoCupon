@@ -1,0 +1,19 @@
+backend_ciudad:
+    path:    /
+    defaults: { _controller: "BackendBundle:Ciudad:index" }
+    
+backend_ciudad_crear:
+    path:    /crear
+    defaults: { _controller: "BackendBundle:Ciudad:crear" }  
+    
+backend_ciudad_ver:
+    path:    /ver/{id}
+    defaults: { _controller: "BackendBundle:Ciudad:ver" }        
+    
+backend_ciudad_actualizar:
+    path:    /actualizar/{id}   
+    defaults: { _controller: "BackendBundle:Ciudad:actualizar" }   
+    
+backend_ciudad_borrar:
+    path:    /borrar/{id}
+    defaults: { _controller: "BackendBundle:Ciudad:borrar" }    
