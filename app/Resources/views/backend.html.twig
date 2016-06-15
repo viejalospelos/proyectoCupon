@@ -20,10 +20,10 @@
 	<h1><a href="{{ path('backend_portada') }}">CUPON ADMIN</a></h1>
 	<nav>
 		<ul>
-			<li><a href="# {# {{ path('backend_oferta') }} #}">Ofertas</a></li>
-			<li><a href="# {# {{ path('backend_tienda') }} #}">Tiendas</a></li>
-			<li><a href="# {# {{ path('backend_usuario') }} #}">Usuarios</a></li>
-			<li><a href="# {# {{ path('backend_ciudad') }} #}">Ciudades</a></li>
+			<li><a href="{{ path('backend_oferta') }}">Ofertas</a></li>
+			<li><a href="{{ path('backend_tienda') }}">Tiendas</a></li>
+			<li><a href="{{ path('backend_usuario') }}">Usuarios</a></li>
+			<li><a href="{{ path('backend_ciudad') }}">Ciudades</a></li>
 			
 			<li>{{ render(controller('CiudadBundle:Default:listaCiudades', {'ciudad': app.session.get('ciudad')})) }}</li>	
 		</ul>

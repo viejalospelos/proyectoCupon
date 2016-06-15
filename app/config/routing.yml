@@ -27,9 +27,10 @@ oferta:
     requirements:
         _locale: en|es
 
-BackendCiudad:
-    resource: "@BackendBundle/Resources/config/routing/ciudad.yml"
-    prefix: /ciudad
+# Rutas importadas del bundle BackendBundle
+BackendBundle:
+    resource: "@BackendBundle/Resources/config/routing.yml"
+    prefix:   /backend
     
 # gestión de páginas estáticas
 #ej ruta http://localhost/Cupon/web/app_dev.php/sitio/ayuda

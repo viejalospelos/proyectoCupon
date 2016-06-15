@@ -1,16 +1,15 @@
 {% extends '::backend.html.twig' %}
 
 {% block article %}
-    <h1>Oferta article</h1>
+    <h1>Ciudad creation</h1>
 
-    {{ form(edit_form) }}
+    {{ form(form) }}
 
         <ul class="record_actions">
     <li>
-        <a href="{{ path('backend_oferta') }}">
+        <a href="{{ path('backend_ciudad') }}">
             Back to the list
         </a>
     </li>
-    <li>{{ form(delete_form) }}</li>
 </ul>
 {% endblock %}

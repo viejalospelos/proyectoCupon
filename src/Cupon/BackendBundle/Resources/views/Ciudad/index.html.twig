@@ -1,32 +1,43 @@
 {% extends '::backend.html.twig' %}
 
-{% block id 'ciudad' %}
-{% block title %}Listado de ciudades{% endblock %}
-
 {% block article %}
-	<h1>{{ block('title') }}</h1>
-	
-	<table>
-		<thead>
-			<tr>
-				<th>Nombre</th>
-				<th>Slug</th>
-				<th>Acciones</th>
-			</tr>
-		</thead>
-		
-		<tbody>
-			{% for ciudad in ciudades %}
-				<tr>
-					<td>{{ ciudad.nombre }}</td>
-					<td>{{ ciudad.slug }}</td>
-					<td>
-						<a href="{{ path(backend_ciudad_actualizar, {'id': ciudad.id}) }}">Modificar</a>
-					</td>
-				</tr>
-			{% endfor %}			
-		</tbody>		
-	</table>
-	
-	<a href="{{ path('backend_ciudad_crear') }}">Crear una nueva ciudad</a>
-{% endblock %}
+    <h1>Ciudad list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Slug</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('backend_ciudad_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.nombre }}</td>
+                <td>{{ entity.slug }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('backend_ciudad_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('backend_ciudad_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('backend_ciudad_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

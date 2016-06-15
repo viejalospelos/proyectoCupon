@@ -1,19 +1,30 @@
 backend_ciudad:
-    path:    /
+    path:     /
     defaults: { _controller: "BackendBundle:Ciudad:index" }
-    
-backend_ciudad_crear:
-    path:    /crear
-    defaults: { _controller: "BackendBundle:Ciudad:crear" }  
-    
-backend_ciudad_ver:
-    path:    /ver/{id}
-    defaults: { _controller: "BackendBundle:Ciudad:ver" }        
-    
-backend_ciudad_actualizar:
-    path:    /actualizar/{id}   
-    defaults: { _controller: "BackendBundle:Ciudad:actualizar" }   
-    
-backend_ciudad_borrar:
-    path:    /borrar/{id}
-    defaults: { _controller: "BackendBundle:Ciudad:borrar" }    
+
+backend_ciudad_show:
+    path:     /{id}/show
+    defaults: { _controller: "BackendBundle:Ciudad:show" }
+
+backend_ciudad_new:
+    path:     /new
+    defaults: { _controller: "BackendBundle:Ciudad:new" }
+
+backend_ciudad_create:
+    path:     /create
+    defaults: { _controller: "BackendBundle:Ciudad:create" }
+    methods:  POST
+
+backend_ciudad_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "BackendBundle:Ciudad:edit" }
+
+backend_ciudad_update:
+    path:     /{id}/update
+    defaults: { _controller: "BackendBundle:Ciudad:update" }
+    methods:  [POST, PUT]
+
+backend_ciudad_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "BackendBundle:Ciudad:delete" }
+    methods:  [POST, DELETE]

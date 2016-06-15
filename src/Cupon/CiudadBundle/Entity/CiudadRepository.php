@@ -40,4 +40,70 @@ class CiudadRepository extends EntityRepository
 	{
 		return $this->queryTodasLasOfertas($ciudad)->getResult();
 	}
+	
+	/**
+	 * Encuentra todas las tiendas asociadas a la ciudad indicada
+	 *
+	 * @param string $ciudad El slug de la ciudad para la que se buscan sus tiendas
+	 */
+	public function findTodasLasTiendas($ciudad)
+	{
+		return $this->queryTodasLasTiendas($ciudad)->getResult();
+	}
+	
+	/**
+	 * Método especial asociado con `findTodasLasTiendas()` y que devuelve solamente
+	 * la consulta necesaria para obtener todas las tiendas de la ciudad indicada.
+	 * Se utiliza para la paginación de resultados.
+	 *
+	 * @param string $ciudad El slug de la ciudad
+	 */
+	public function queryTodasLasTiendas($ciudad)
+	{
+		$em = $this->getEntityManager();
+	
+		$consulta = $em->createQuery('
+            SELECT t
+            FROM TiendaBundle:Tienda t JOIN t.ciudad c
+            WHERE c.slug = :ciudad
+            ORDER BY t.nombre ASC
+        ');
+		$consulta->setParameter('ciudad', $ciudad);
+		$consulta->useResultCache(true, 600);
+	
+		return $consulta;
+	
+	}
+	
+	/**
+	 * Encuentra todos los usuarios asociados a la ciudad indicada
+	 *
+	 * @param string $ciudad El slug de la ciudad para la que se buscan sus usuarios
+	 */
+	public function findTodosLosUsuarios($ciudad)
+	{
+		return $this->queryTodosLosUsuarios($ciudad)->getResult();
+	}
+	
+	/**
+	 * Método especial asociado con `findTodosLosUsuarios()` y que devuelve solamente
+	 * la consulta necesaria para obtener todos los usuarios de la ciudad indicada.
+	 * Se utiliza para la paginación de resultados.
+	 *
+	 * @param string $ciudad El slug de la ciudad
+	 */
+	public function queryTodosLosUsuarios($ciudad)
+	{
+		$em = $this->getEntityManager();
+	
+		$consulta = $em->createQuery('
+            SELECT u
+            FROM UsuarioBundle:Usuario u JOIN u.ciudad c
+            WHERE c.slug = :ciudad
+            ORDER BY u.apellidos ASC
+        ');
+		$consulta->setParameter('ciudad', $ciudad);
+	
+		return $consulta;
+	}
 }
